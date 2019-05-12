@@ -24,6 +24,9 @@ class Application extends React.Component {
             className: this.constructor.name,
             state: this.state
         });
+        this.socket.on('store_state_success', data => {
+            this.socket.close();
+        });
     }
 }
 
