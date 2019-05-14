@@ -5,7 +5,8 @@ const next = require('next');
 var appState = require('./app_state.js');
 
 const dev = process.env.NODE_ENV !== 'production';
-const nextApp = next({ dev });
+const dir = __dirname;
+const nextApp = next({ dev, dir });
 const handler = nextApp.getRequestHandler();
 
 io.on('connect', socket => {
