@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Link from 'next/link';
 import Application from '../src/application';
+import ControlPanel from '../component/ControlPanel';
 
 const theme = createMuiTheme({
     typography: {
@@ -71,6 +72,7 @@ class Cal extends Application {
                 <div>
                     <CssBaseline />
                     <form className={classes.container} noValidate autoComplete="off">
+                    <ControlPanel />
                         <TextField
                             id="num1"
                             label="Number 1"

@@ -3,6 +3,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
 var appState = require('./app_state.js');
+const fs = require('fs');
 
 const dev = process.env.NODE_ENV !== 'production';
 const dir = __dirname;
@@ -18,7 +19,7 @@ io.on('connect', socket => {
         let appStates = appState.get();
         appStates[data.className] = data;
         appState.set(appStates);
-        socket.emit('store_state_success',{});
+        socket.emit('store_state_success', {});
     });
 
     socket.on('get_state', data => {
@@ -34,8 +35,34 @@ nextApp.prepare().then(() => {
         handler(req, res);
     });
 
+    app.post('/send', (req, res) => {
+        let appStates = appState.get();
+        fs.writeFile(__dirname + "/state", JSON.stringify(appStates), function (err) {
+            if (err) {
+                res.status(500);
+                res.send();
+                console.log('Fail to write state');
+            } else {
+                res.send();
+                server.close(() => {
+                    console.log('Server closed');
+                    process.exit(0);
+                });
+            }
+        });
+    })
+
     server.listen(3000, err => {
         if (err) throw err;
         console.log('> Ready on http://localhost:3000');
     });
+});
+
+fs.exists(__dirname + "/state", (exists) => {
+    if (exists) {
+        fs.readFile(__dirname + "/state", (err, state) => {
+            if (err) throw err;
+            appState.set(JSON.parse(state));
+        });
+    }
 });
