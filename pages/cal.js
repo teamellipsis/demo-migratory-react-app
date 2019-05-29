@@ -71,8 +71,8 @@ class Cal extends Application {
             <MuiThemeProvider theme={theme}>
                 <div>
                     <CssBaseline />
-                    <form className={classes.container} noValidate autoComplete="off">
                     <ControlPanel />
+                    <form className={classes.container} noValidate autoComplete="off">
                         <TextField
                             id="num1"
                             label="Number 1"
